@@ -34,6 +34,7 @@ class CreateUsersTable extends Migration
             $table->tinyInteger('gender'); //0 female 1 male
             $table->string('picture')->nullable();
             $table->integer('address_id');
+            $table->integer('alternative_contact')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
@@ -45,7 +46,7 @@ class CreateUsersTable extends Migration
             $table->integer('phone_number');
             $table->tinyInteger('gender'); //0 female 1 male
             $table->tinyInteger('is_approved');
-            $table->tinyInteger('is_active');
+            $table->tinyInteger('is_available');
             $table->string('qualifications')->nullable();
             $table->string('experience')->nullable;
             $table->string('picture')->nullable;
@@ -54,20 +55,9 @@ class CreateUsersTable extends Migration
             $table->timestamps();
         });
 
-        Schema::create('children', function (Blueprint $table) {
-            $table->id('id');
-            $table->integer('parent_id');
-            $table->string('name');
-            $table->date('date_of_birth');
-            $table->string('details')->nullable();
-            $table->rememberToken();
-            $table->timestamps();
-        });
-
         Schema::create('alternative_contact', function (Blueprint $table) {
             $table->id('id');
             $table->string('first_name');
-            $table->integer('parent_id');
             $table->string('last_name');
             $table->integer('phone_number');
             $table->string('details');
@@ -90,10 +80,11 @@ class CreateUsersTable extends Migration
 
         Schema::create('appointments', function (Blueprint $table) {
             $table->id('id');
-            $table->uuid('parent_id');
+            $table->integer('parent_id');
             $table->dateTime('start_time');
             $table->dateTime('end_time');
-            $table->integer('address_id');
+            $table->string('details')->nullable();
+            $table->string('address_id');
             $table->tinyInteger('is_scheduled');
             $table->tinyInteger('is_canceled');
             $table->rememberToken();
@@ -103,21 +94,13 @@ class CreateUsersTable extends Migration
         Schema::create('appointment_details', function (Blueprint $table) {
             $table->id('id');
             $table->integer('appointment_ID');
-            $table->uuid('babysitter_id');
+            $table->integer('babysitter_id');
             $table->tinyInteger('is_approved');
             $table->tinyInteger('is_canceled');
             $table->rememberToken();
             $table->timestamps();
         });
 
-        Schema::create('appointment_kids_details', function (Blueprint $table) {
-            $table->id('id');
-            $table->integer('child_id');
-            $table->integer('appointment_id');
-            $table->string('details')->nullable();
-            $table->rememberToken();
-            $table->timestamps();
-        });
 
         Schema::create('ratings', function (Blueprint $table) {
             $table->id('id');

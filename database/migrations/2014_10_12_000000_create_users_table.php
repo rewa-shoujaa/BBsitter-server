@@ -101,6 +101,16 @@ class CreateUsersTable extends Migration
             $table->timestamps();
         });
 
+	Schema::create('notifications', function (Blueprint $table) {
+            $table->id('noti_id');
+		$table->text('text');
+
+            $table->integer('target_id');
+            $table->tinyInteger('is_read');
+            $table->rememberToken();
+            $table->timestamps();
+        });
+
         Schema::create('chat_messages', function (Blueprint $table) {
             $table->id('id');
             $table->integer('room_id');

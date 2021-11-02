@@ -64,7 +64,6 @@ class UserController extends Controller
         $parent = new Parent_user;
         $address = new Address;
         //////Add Address
-        $address->address = $request->address;
         $address->address_latitude = $request->latitude;
         $address->address_longitude = $request->longitude;
         $address->city_id = $request->city;

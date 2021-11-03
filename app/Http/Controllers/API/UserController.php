@@ -64,6 +64,7 @@ class UserController extends Controller
         $parent = new Parent_user;
         $address = new Address;
         //////Add Address
+        //$address->address = $request->address;
         $address->address_latitude = $request->latitude;
         $address->address_longitude = $request->longitude;
         $address->city_id = $request->city;
@@ -157,17 +158,6 @@ class UserController extends Controller
             $parent->save();
             $last_parent = $parent->id;
 
-            /////////Add Alternative Contact
-            //$alternativeContact->details = $request->cntdetail;
-            //$alternativeContact->first_name=$request->cntfirst_name;
-            //$alternativeContact->last_name=$request->cntlast_name;
-            //$alternativeContact->phone_number=$request->cntphone_number;
-            //$alternativeContact->is_active=1;
-            //$alternativeContact->parent_id=$last_parent;
-            //$alternativeContact->save();
-
-            /////////Add Children
-            //$child
             return $last_parent;
 
         }
@@ -474,6 +464,29 @@ class UserController extends Controller
             ]);
 
         }
+    }
+
+    function getBabysitterDetailswithRatings($id)
+    {
+        $AllDetails = [];
+        $avg = [];
+
+        $UserDetails = User::where("id", $id)->get()->toArray();
+        $babysitterDetails = Babysitter::where('user_id', $id)->get();
+        $Address = Address::where('id', $babysitterDetails[0]->address_id)->get()->toArray();
+        $Rating = Rating::where('target_user_id', $babysitterDetails[0]->id)->pluck('rating')->toArray();
+        $average = 0;
+        if (count($Rating) > 0) {
+            $average = array_sum($Rating) / count($Rating);
+            round($average, 1);
+
+        }
+        array_push($avg, $average);
+        $babysitterDetails = $babysitterDetails->toArray();
+        $AllDetails = array_merge($UserDetails, $babysitterDetails, $Address, $avg);
+
+        return json_encode($AllDetails);
+    //return json_encode($parentDetails[0]->address_id);
 
     }
 }

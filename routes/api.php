@@ -29,6 +29,8 @@ Route::group(['middleware' => 'auth.jwt'], function () {
     Route::get('/babysitterDetails/{id}', [UserController::class , 'getBabysitterDetails'])->name('api:getbabysitterProfile');
     Route::get('/getAllBabysitters', [UserController::class , 'getAllBabysitters'])->name('api:getBabysitters');
 
+    Route::get('/babysitterDetailswithRating/{id}', [UserController::class , 'getBabysitterDetailswithRatings'])->name('api:getBabysitterDetailswithRatings');
+
 
     Route::post('/search', [UserController::class , 'Search'])->name('api:Search');
     Route::get('/getScheduled', [UserController::class , 'getScheduled'])->name('api:getScheduled');

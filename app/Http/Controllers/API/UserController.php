@@ -489,4 +489,10 @@ class UserController extends Controller
     //return json_encode($parentDetails[0]->address_id);
 
     }
+
+    function GetRatings($id)
+    {
+        $Ratings = Rating::where('target_user_id', $id)->get()->toArray();
+        return json_encode($Ratings);
+    }
 }

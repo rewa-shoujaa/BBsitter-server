@@ -28,6 +28,7 @@ Route::group(['middleware' => 'auth.jwt'], function () {
     Route::post('/BookAppointment', [UserController::class , 'BookAppointment'])->name('api:bookAppointmnet');
     Route::get('/babysitterDetails/{id}', [UserController::class , 'getBabysitterDetails'])->name('api:getbabysitterProfile');
     Route::get('/getAllBabysitters', [UserController::class , 'getAllBabysitters'])->name('api:getBabysitters');
+    Route::get('/GetRatings/{id}', [UserController::class , 'GetRatings'])->name('api:GetRatings');
 
     Route::get('/babysitterDetailswithRating/{id}', [UserController::class , 'getBabysitterDetailswithRatings'])->name('api:getBabysitterDetailswithRatings');
 

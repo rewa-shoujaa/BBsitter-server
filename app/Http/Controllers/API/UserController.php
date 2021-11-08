@@ -97,7 +97,6 @@ class UserController extends Controller
 
         $imagedata = explode(",", $img);
         $image = $imagedata[1];
-        //$image = str_replace('data:image/png;base64,', '', $img);
         $image = str_replace(' ', '+', $image);
         $imageName = "str_random(" . rand(10, 1000) . ")" . "." . "jpeg";
         \File::put($path . '/image/' . $imageName, base64_decode($image));
@@ -431,6 +430,8 @@ class UserController extends Controller
         $appointment->is_scheduled = 0;
         $appointment->parent_id = $request->Parentid;
         $appointment->save();
+        $name = $user->first_name . " " . $user->last_name;
+        $message = $name . " requested an appointment";
         foreach ($AllBabysitter as $babysitter) {
             $appointmentRequest = new Appointment_detail;
             $appointmentRequest->appointment_ID = $appointment->id;
@@ -438,6 +439,16 @@ class UserController extends Controller
             $appointmentRequest->is_approved = 0;
             $appointmentRequest->is_declined = 0;
             $appointmentRequest->save();
+
+            $targetID = Babysitter::where('id', $babysitter->id)->get('user_id');
+            $token = User::where('id', $targetID[0]->user_id)->get('device_key');
+            $notificationController = new WebNotificationController;
+            if ($token[0]->device_key !== null) {
+                $notificationController->sendNotification($token[0]->device_key, $message);
+            }
+
+            $notificationController->sendlocalNotification($message, $targetID[0]->user_id);
+
         }
         return ($AllBabysitter);
     }

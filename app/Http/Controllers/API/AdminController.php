@@ -16,7 +16,8 @@ class AdminController extends Controller
     function test()
     {
         $user = Auth::user();
-        $id = $user->id;
+        //$id = $user->id;
+
         return json_encode(Auth::user());
     }
 

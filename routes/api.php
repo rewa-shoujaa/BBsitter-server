@@ -18,28 +18,27 @@ Route::get('/getCities/{Country}', [UserController::class , 'getCities'])->name(
 Route::post('/babysitter/register', [BabysitterController::class , 'register_babysitter'])->name('api:RegisterBabysitter');
 
 
-Route::group(['middleware' => 'auth.jwt'], function () {
-    Route::get('/test', [UserController::class , 'test'])->name('api:test');
-    //Route::get('/admintest', [AdminController::class , 'test'])->name('api:admintest');
-    Route::get('/getParentDetails', [UserController::class , 'getParentDetails'])->name('api:getParentDetails');
-    Route::post('/setParentDetails', [UserController::class , 'setParentDetails'])->name('api:setParentDetails');
-    Route::post('/SendAppointment', [UserController::class , 'SendAppointmentRequest'])->name('api:sendAppointment');
-    Route::get('/getBabysittersinCity/{CityID}', [UserController::class , 'getBabysittersinCity'])->name('api:BabysitterinCity');
-    Route::post('/BookAppointment', [UserController::class , 'BookAppointment'])->name('api:bookAppointmnet');
-    Route::get('/babysitterDetails/{id}', [UserController::class , 'getBabysitterDetails'])->name('api:getbabysitterProfile');
-    Route::get('/getAllBabysitters', [UserController::class , 'getAllBabysitters'])->name('api:getBabysitters');
-    Route::get('/GetRatings/{id}', [UserController::class , 'GetRatings'])->name('api:GetRatings');
-
-    Route::get('/babysitterDetailswithRating/{id}', [UserController::class , 'getBabysitterDetailswithRatings'])->name('api:getBabysitterDetailswithRatings');
-
-
-    Route::post('/search', [UserController::class , 'Search'])->name('api:Search');
-    Route::get('/getScheduled', [UserController::class , 'getScheduled'])->name('api:getScheduled');
-    Route::get('/getPending', [UserController::class , 'getPending'])->name('api:getPending');
-    Route::get('/Cancel/{id}', [UserController::class , 'Cancel'])->name('api:Cancel');
-    Route::post('/FeelingLucky', [UserController::class , 'FeelingLucky'])->name('api:FeelingLucky');
-    Route::post('/rate', [UserController::class , 'AddRating'])->name('api:AddRating');
-
+Route::group([
+    'middleware' => ['auth.jwt', 'auth.babysitter']
+], function ($router) {
+    /*Route::get('/test', [UserController::class , 'test'])->name('api:test');
+     Route::get('/getParentDetails', [UserController::class , 'getParentDetails'])->name('api:getParentDetails');
+     Route::post('/setParentDetails', [UserController::class , 'setParentDetails'])->name('api:setParentDetails');
+     Route::post('/SendAppointment', [UserController::class , 'SendAppointmentRequest'])->name('api:sendAppointment');
+     Route::get('/getBabysittersinCity/{CityID}', [UserController::class , 'getBabysittersinCity'])->name('api:BabysitterinCity');
+     Route::post('/BookAppointment', [UserController::class , 'BookAppointment'])->name('api:bookAppointmnet');
+     Route::get('/babysitterDetails/{id}', [UserController::class , 'getBabysitterDetails'])->name('api:getbabysitterProfile');
+     Route::get('/getAllBabysitters', [UserController::class , 'getAllBabysitters'])->name('api:getBabysitters');
+     Route::get('/GetRatings/{id}', [UserController::class , 'GetRatings'])->name('api:GetRatings');
+     Route::get('/babysitterDetailswithRating/{id}', [UserController::class , 'getBabysitterDetailswithRatings'])->name('api:getBabysitterDetailswithRatings');
+     
+     Route::post('/search', [UserController::class , 'Search'])->name('api:Search');
+     Route::get('/getScheduled', [UserController::class , 'getScheduled'])->name('api:getScheduled');
+     Route::get('/getPending', [UserController::class , 'getPending'])->name('api:getPending');
+     Route::get('/Cancel/{id}', [UserController::class , 'Cancel'])->name('api:Cancel');
+     Route::post('/FeelingLucky', [UserController::class , 'FeelingLucky'])->name('api:FeelingLucky');
+     Route::post('/rate', [UserController::class , 'AddRating'])->name('api:AddRating');
+     */
     Route::get('/babysitter/getAppointments', [BabysitterController::class , 'getAppointmentRequests'])->name('api:getAppointmentRequests');
     Route::get('/babysitter/AcceptAppointment/{id}', [BabysitterController::class , 'AcceptAppointment'])->name('api:AcceptAppointment');
     Route::get('/babysitter/DeclineAppointment/{id}', [BabysitterController::class , 'DeclineAppointment'])->name('api:DeclineAppointment');
@@ -49,9 +48,7 @@ Route::group(['middleware' => 'auth.jwt'], function () {
 
     Route::get('/babysitter/getDetails', [BabysitterController::class , 'getBabysitterDetails'])->name('api:getBabysitterDetails');
     Route::post('/babysitter/setDetails', [BabysitterController::class , 'setBabySitterDetails'])->name('api:setBabysitterDetails');
-    //Route::get('/babysitter/getAppointments', [BabysitterController::class , 'getAppointmentRequests'])->name('api:getAppointmentRequests');
     Route::get('/babysitter/notAvailable', [BabysitterController::class , 'setNotAvailable'])->name('api:setNotAvailable');
-    //Route::post('/babysitter/AcceptAppointment', [BabysitterController::class , 'AcceptAppointment'])->name('api:AcceptAppointment');
 
     ///Admin
     Route::get('/admin/getParents', [AdminController::class , 'getAllParents'])->name('api:getAllParents');
@@ -70,18 +67,32 @@ Route::group(['middleware' => 'auth.jwt'], function () {
 
 });
 
-Route::group(['middleware' => 'admin'], function () {
-    Route::get('/admintest', [AdminController::class , 'test'])->name('api:admintest');
+Route::group([
+    'middleware' => ['auth.jwt', 'auth.parent']
+], function ($router) {
+    //Route::get('/admintest', [AdminController::class , 'test'])->name('api:admintest');
+    Route::get('/test', [UserController::class , 'test'])->name('api:test');
+    Route::get('/getParentDetails', [UserController::class , 'getParentDetails'])->name('api:getParentDetails');
+    Route::post('/setParentDetails', [UserController::class , 'setParentDetails'])->name('api:setParentDetails');
+    Route::post('/SendAppointment', [UserController::class , 'SendAppointmentRequest'])->name('api:sendAppointment');
+    Route::get('/getBabysittersinCity/{CityID}', [UserController::class , 'getBabysittersinCity'])->name('api:BabysitterinCity');
+    Route::post('/BookAppointment', [UserController::class , 'BookAppointment'])->name('api:bookAppointmnet');
+    Route::get('/babysitterDetails/{id}', [UserController::class , 'getBabysitterDetails'])->name('api:getbabysitterProfile');
+    Route::get('/getAllBabysitters', [UserController::class , 'getAllBabysitters'])->name('api:getBabysitters');
+    Route::get('/GetRatings/{id}', [UserController::class , 'GetRatings'])->name('api:GetRatings');
+
+    Route::get('/babysitterDetailswithRating/{id}', [UserController::class , 'getBabysitterDetailswithRatings'])->name('api:getBabysitterDetailswithRatings');
+    Route::post('/search', [UserController::class , 'Search'])->name('api:Search');
+    Route::get('/getScheduled', [UserController::class , 'getScheduled'])->name('api:getScheduled');
+    Route::get('/getPending', [UserController::class , 'getPending'])->name('api:getPending');
+    Route::get('/Cancel/{id}', [UserController::class , 'Cancel'])->name('api:Cancel');
+    Route::post('/FeelingLucky', [UserController::class , 'FeelingLucky'])->name('api:FeelingLucky');
+    Route::post('/rate', [UserController::class , 'AddRating'])->name('api:AddRating');
+
+    ///Notification
+    Route::post('/save-device-token', [WebNotificationController::class , 'saveDeviceToken'])->name('save-device-token');
+    Route::get('/sendNotification/{device_token}/{message}', [WebNotificationController::class , 'sendNotification'])->name('sendNotification');
+    Route::get('/getNotifications', [WebNotificationController::class , 'getNotifications'])->name('getNotifications');
+    Route::get('/setRead', [WebNotificationController::class , 'setRead'])->name('setRead');
+    Route::get('/sendlocalNotification/{notification_body}/{targetID}', [WebNotificationController::class , 'sendlocalNotification'])->name('sendlocalNotification');
 });
-
-//Route::group(['middleware' => 'babysitter'], function () {
-//    Route::get('/babysitter/test', [BabysitterController::class , 'home'])->name('api:test');
-//});
-
-
-//Route::group(['middleware' => 'auth.jwt'], function () {
-//    Route::group(['middleware' => 'admin'], function () {
-//            Route::get('/admin/test', [AdminController::class , 'test'])->name('api:test');
-//        }
-//        );
-//    })

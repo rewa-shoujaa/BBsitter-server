@@ -66,7 +66,8 @@ class Kernel extends HttpKernel
         'auth.jwt' => \Tymon\JWTAuth\Http\Middleware\Authenticate::class ,
         'jwt.refresh' => \Tymon\JWTAuth\Middleware\RefreshToken::class ,
 
-        'admin' => \App\Http\Middleware\Admin::class ,
+        'auth.parent' => \App\Http\Middleware\Auth\Parent_Authentication::class ,
+        'auth.babysitter' => \App\Http\Middleware\Auth\Babysitter::class ,
         //'babysitter' => \App\Http\Middleware\Babysitter::class ,
     ];
 }

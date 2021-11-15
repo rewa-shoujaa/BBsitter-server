@@ -76,6 +76,8 @@ class BabysitterController extends Controller
         return json_encode("Hello");
     }
 
+    // decode pdf CV from base 64 and put it in CV folder 
+
     public function CV_upload($cv)
     {
         $path = public_path();
@@ -89,6 +91,8 @@ class BabysitterController extends Controller
 
     }
 
+
+    // decode picture from base 64 and put it in image folder 
     public function Profile_picture($img)
     {
         $path = public_path();
@@ -258,6 +262,9 @@ class BabysitterController extends Controller
 
     }
 
+
+    // get Pending appointments requests for babysitter
+
     function getAppointmentRequests()
     {
         $user = Auth::user();
@@ -285,6 +292,9 @@ class BabysitterController extends Controller
     //return json_encode($users);
 
     }
+
+
+    // Get Scheduled appointments for babysitter 
 
     function getAppointmentScheduled()
     {

@@ -15,6 +15,8 @@ use Illuminate\Http\Request;
 
 class WebNotificationController extends Controller
 {
+
+    //Save FCM token in users table
     public function saveDeviceToken(Request $request)
     {
         $user = Auth::user();
@@ -24,9 +26,10 @@ class WebNotificationController extends Controller
     }
 
 
+    //Send push notification from Laravel to firebase
+
     public function sendNotification($device_token, $message)
     {
-        //$SERVER_API_KEY = 'AIzaSyBSgc6fB3OLVDg5gPcELMY91LrTNtm8btw';
         $SERVER_API_KEY = 'AAAA9SYcpQo:APA91bEATec8oeYCYTeqz45gd82p01Cl0AjOtLlYwZ_qI87Ip8IwQw8KjZhlf82b1625BeiosR5V7P5cAVBti7WK0Tfy_xq6TZdvn1iLwHJV1e2jmwZ1POdYzl57dxOUdZ_VpvttRiQG';
 
 
@@ -60,6 +63,8 @@ class WebNotificationController extends Controller
 
         return $response;
     }
+
+    //Add Notification to local table in database
 
     public function sendlocalNotification($notification_body, $targetID)
     {

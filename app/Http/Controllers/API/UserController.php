@@ -91,6 +91,8 @@ class UserController extends Controller
         return ($last_parent);
     }
 
+    // decode picture from base 64 and put it in image folder 
+
     public function Profile_picture($img)
     {
         $path = public_path();
@@ -120,7 +122,6 @@ class UserController extends Controller
         $AllParentDetails = array_merge($UserDetails, $parentDetails, $Address);
 
         return json_encode($AllParentDetails);
-    //return json_encode($parentDetails[0]->address_id);
 
     }
 
@@ -222,6 +223,8 @@ class UserController extends Controller
         return ($token[0]->device_key);
     }
 
+
+
     function SendAppointmentRequest(Request $request)
     {
         $user = Auth::user();
@@ -234,6 +237,8 @@ class UserController extends Controller
         $appointmentRequest->save();
         return ($appointmentRequest->id);
     }
+
+
 
     function getBabySitterinCity(Request $request)
     {
@@ -263,6 +268,8 @@ class UserController extends Controller
 
     }
 
+    // get All babysitters registered
+
     function getBabysittersinCity($CityID)
     {
         $user = Auth::user();
@@ -280,6 +287,8 @@ class UserController extends Controller
 
     }
 
+    // get babysitters in the same city as parent 
+
     function getAllBabysitters()
     {
         $user = Auth::user();
@@ -296,6 +305,8 @@ class UserController extends Controller
 
     }
 
+    // get babysitter details for babysitter profile 
+
     function getBabysitterDetails($id)
     {
         $AllDetails = [];
@@ -310,6 +321,8 @@ class UserController extends Controller
     //return json_encode($parentDetails[0]->address_id);
 
     }
+
+    //Search among babysitters in city
     function Search(Request $request)
     {
         $CityID = $request->city;
@@ -331,6 +344,9 @@ class UserController extends Controller
 
         return json_encode($searchBabysitter);
     }
+
+
+    // Get Scheduled Appointments for parents
 
     function getScheduled()
     {
@@ -357,6 +373,9 @@ class UserController extends Controller
 
         return json_encode($users);
     }
+
+
+    // Get Pending Appointments for parents
 
     function getPending()
     {
@@ -405,6 +424,9 @@ class UserController extends Controller
 
     }
 
+
+    //Send booking requests for all babysitters in city
+
     function FeelingLucky(Request $request)
     {
         $user = Auth::user();
@@ -439,7 +461,7 @@ class UserController extends Controller
             $appointmentRequest->is_approved = 0;
             $appointmentRequest->is_declined = 0;
             $appointmentRequest->save();
-
+            //send notification
             $targetID = Babysitter::where('id', $babysitter->id)->get('user_id');
             $token = User::where('id', $targetID[0]->user_id)->get('device_key');
             $notificationController = new WebNotificationController;
@@ -453,6 +475,7 @@ class UserController extends Controller
         return ($AllBabysitter);
     }
 
+    // Rate babysitter by parent
     function AddRating(Request $request)
     {
         $BabysitterID = $request->babysitterID;
@@ -476,6 +499,8 @@ class UserController extends Controller
 
         }
     }
+
+    // get Babysitter details with average rating for profile
 
     function getBabysitterDetailswithRatings($id)
     {
@@ -501,6 +526,7 @@ class UserController extends Controller
 
     }
 
+    //get all babysitter rating with comments by parents
     function GetRatings($id)
     {
         $Ratings = Rating::where('target_user_id', $id)->get()->toArray();

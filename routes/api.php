@@ -19,26 +19,20 @@ Route::post('/babysitter/register', [BabysitterController::class , 'register_bab
 
 
 Route::group([
+    'middleware' => ['auth.jwt']
+], function ($router) {
+    ///Notification
+    Route::post('/save-device-token', [WebNotificationController::class , 'saveDeviceToken'])->name('save-device-token');
+    Route::get('/sendNotification/{device_token}/{message}', [WebNotificationController::class , 'sendNotification'])->name('sendNotification');
+    Route::get('/getNotifications', [WebNotificationController::class , 'getNotifications'])->name('getNotifications');
+    Route::get('/setRead', [WebNotificationController::class , 'setRead'])->name('setRead');
+    Route::get('/sendlocalNotification/{notification_body}/{targetID}', [WebNotificationController::class , 'sendlocalNotification'])->name('sendlocalNotification');
+});
+
+
+Route::group([
     'middleware' => ['auth.jwt', 'auth.babysitter']
 ], function ($router) {
-    /*Route::get('/test', [UserController::class , 'test'])->name('api:test');
-     Route::get('/getParentDetails', [UserController::class , 'getParentDetails'])->name('api:getParentDetails');
-     Route::post('/setParentDetails', [UserController::class , 'setParentDetails'])->name('api:setParentDetails');
-     Route::post('/SendAppointment', [UserController::class , 'SendAppointmentRequest'])->name('api:sendAppointment');
-     Route::get('/getBabysittersinCity/{CityID}', [UserController::class , 'getBabysittersinCity'])->name('api:BabysitterinCity');
-     Route::post('/BookAppointment', [UserController::class , 'BookAppointment'])->name('api:bookAppointmnet');
-     Route::get('/babysitterDetails/{id}', [UserController::class , 'getBabysitterDetails'])->name('api:getbabysitterProfile');
-     Route::get('/getAllBabysitters', [UserController::class , 'getAllBabysitters'])->name('api:getBabysitters');
-     Route::get('/GetRatings/{id}', [UserController::class , 'GetRatings'])->name('api:GetRatings');
-     Route::get('/babysitterDetailswithRating/{id}', [UserController::class , 'getBabysitterDetailswithRatings'])->name('api:getBabysitterDetailswithRatings');
-     
-     Route::post('/search', [UserController::class , 'Search'])->name('api:Search');
-     Route::get('/getScheduled', [UserController::class , 'getScheduled'])->name('api:getScheduled');
-     Route::get('/getPending', [UserController::class , 'getPending'])->name('api:getPending');
-     Route::get('/Cancel/{id}', [UserController::class , 'Cancel'])->name('api:Cancel');
-     Route::post('/FeelingLucky', [UserController::class , 'FeelingLucky'])->name('api:FeelingLucky');
-     Route::post('/rate', [UserController::class , 'AddRating'])->name('api:AddRating');
-     */
     Route::get('/babysitter/getAppointments', [BabysitterController::class , 'getAppointmentRequests'])->name('api:getAppointmentRequests');
     Route::get('/babysitter/AcceptAppointment/{id}', [BabysitterController::class , 'AcceptAppointment'])->name('api:AcceptAppointment');
     Route::get('/babysitter/DeclineAppointment/{id}', [BabysitterController::class , 'DeclineAppointment'])->name('api:DeclineAppointment');
@@ -57,13 +51,6 @@ Route::group([
     Route::get('/admin/deactivateParent/{id}', [AdminController::class , 'deactivate_parent'])->name('api:deactivateParent');
     Route::get('/admin/activatebabysitter/{id}', [AdminController::class , 'activate_babysitter'])->name('api:activateBabysitter');
     Route::get('/admin/deactivatebabysitter/{id}', [AdminController::class , 'deactivate_babysitter'])->name('api:DeactivateBabysitter');
-
-    ///Notification
-    Route::post('/save-device-token', [WebNotificationController::class , 'saveDeviceToken'])->name('save-device-token');
-    Route::get('/sendNotification/{device_token}/{message}', [WebNotificationController::class , 'sendNotification'])->name('sendNotification');
-    Route::get('/getNotifications', [WebNotificationController::class , 'getNotifications'])->name('getNotifications');
-    Route::get('/setRead', [WebNotificationController::class , 'setRead'])->name('setRead');
-    Route::get('/sendlocalNotification/{notification_body}/{targetID}', [WebNotificationController::class , 'sendlocalNotification'])->name('sendlocalNotification');
 
 });
 
@@ -89,10 +76,4 @@ Route::group([
     Route::post('/FeelingLucky', [UserController::class , 'FeelingLucky'])->name('api:FeelingLucky');
     Route::post('/rate', [UserController::class , 'AddRating'])->name('api:AddRating');
 
-    ///Notification
-    Route::post('/save-device-token', [WebNotificationController::class , 'saveDeviceToken'])->name('save-device-token');
-    Route::get('/sendNotification/{device_token}/{message}', [WebNotificationController::class , 'sendNotification'])->name('sendNotification');
-    Route::get('/getNotifications', [WebNotificationController::class , 'getNotifications'])->name('getNotifications');
-    Route::get('/setRead', [WebNotificationController::class , 'setRead'])->name('setRead');
-    Route::get('/sendlocalNotification/{notification_body}/{targetID}', [WebNotificationController::class , 'sendlocalNotification'])->name('sendlocalNotification');
 });
